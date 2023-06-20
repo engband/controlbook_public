@@ -6,12 +6,12 @@ class VTOLDynamics:
     def __init__(self, alpha = 0.0):
         # Initial state conditions
         self.state = np.array([
-            [P.z0],  # initial lateral position
-            [P.h0],  # initial altitude
-            [P.theta0],  # initial roll angle
-            [P.zdot0],  # initial lateral velocity
-            [P.hdot0],  # initial climb rate
-            [P.thetadot0],  # initial angular velocity
+            P.z0,  # initial lateral position
+            P.h0,  # initial altitude
+            P.theta0,  # initial roll angle
+            P.zdot0,  # initial lateral velocity
+            P.hdot0,  # initial climb rate
+            P.thetadot0,  # initial angular velocity
         ])
         #################################################
         # The parameters for any physical system are never known exactly. Feedback
@@ -40,20 +40,20 @@ class VTOLDynamics:
 
     def f(self, state, u):
         #  Return xdot = f(x,u)
-        z = state[0][0]
-        h = state[1][0]
-        theta = state[2][0]
-        zdot = state[3][0]
-        hdot = state[4][0]
-        thetadot = state[5][0]
-        fr = u[0][0]
-        fl = u[1][0]
+        z = state[0]
+        h = state[1]
+        theta = state[2]
+        zdot = state[3]
+        hdot = state[4]
+        thetadot = state[5]
+        fr = u[0]
+        fl = u[1]
         # The equations of motion.
         zddot = (-(fr + fl) * np.sin(theta) + -self.mu * zdot + self.F_wind) / (self.mc + 2.0 * self.mr)
         hddot = (-(self.mc + 2.0 * self.mr) * P.g + (fr + fl) * np.cos(theta)) / (self.mc + 2.0 * self.mr)
         thetaddot = self.d * (fr - fl) / (self.Jc + 2.0 * self.mr * (self.d ** 2))
         # build xdot and return
-        xdot = np.array([[zdot], [hdot], [thetadot], [zddot], [hddot], [thetaddot]])
+        xdot = np.array([zdot, hdot, thetadot, zddot, hddot, thetaddot])
         return xdot
 
     def h(self):
@@ -61,7 +61,7 @@ class VTOLDynamics:
         z = self.state.item(0)
         h = self.state.item(1)
         theta = self.state.item(2)
-        y = np.array([[z], [h], [theta]])
+        y = np.array([z, h, theta])
         return y
 
     def rk4_step(self, u):
@@ -70,4 +70,4 @@ class VTOLDynamics:
         F2 = self.f(self.state + P.Ts / 2 * F1, u)
         F3 = self.f(self.state + P.Ts / 2 * F2, u)
         F4 = self.f(self.state + P.Ts * F3, u)
-        self.state += P.Ts / 6 * (F1 + 2 * F2 + 2 * F3 + F4)
+        self.state += P.Ts / 6 * (F1 + 2*F2 + 2*F3 + F4)

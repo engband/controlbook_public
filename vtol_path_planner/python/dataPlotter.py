@@ -4,6 +4,7 @@ import numpy as np
 import VTOLParam as P
 
 plt.ion()  # enable interactive drawing
+fn = 2
 
 class dataPlotter:
     def __init__(self):
@@ -11,6 +12,7 @@ class dataPlotter:
         self.num_rows = 5    # Number of subplot rows
         self.num_cols = 1    # Number of subplot columns
         # Crete figure and axes handles
+        plt.figure(fn).clear()
         self.fig, self.ax = plt.subplots(self.num_rows, self.num_cols, sharex=True)
         # Instantiate lists to hold the time and data histories
         self.time_history = []  # time
@@ -104,11 +106,13 @@ class myPlot:
         if self.init == True:  # Initialize the plot the first time routine is called
             for i in range(len(data)):
                 # Instantiate line object and add it to the axes
-                self.line.append(Line2D(time,
-                                        data[i],
-                                        color=self.colors[np.mod(i, len(self.colors) - 1)],
-                                        ls=self.line_styles[np.mod(i, len(self.line_styles) - 1)],
-                                        label=self.legend if self.legend != None else None))
+                self.line.append(Line2D(
+                    time,
+                    data[i],
+                    color=self.colors[np.mod(i, len(self.colors) - 1)],
+                    ls=self.line_styles[np.mod(i, len(self.line_styles) - 1)],
+                    label=self.legend if self.legend != None else None
+                ))
                 self.ax.add_line(self.line[i])
             self.init = False
             # add legend if one is specified

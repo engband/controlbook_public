@@ -18,32 +18,41 @@ class ctrlTrajectoryFollower:
         integrator_z = 0.2
         # State Space Equations
         self.Fe = (P.mc + 2.0 * P.mr) * P.g  # equilibrium force
-        A = np.array([[0., 0., 0., 1., 0., 0.],
-                      [0., 0., 0., 0., 1., 0.],
-                      [0., 0., 0., 0., 0., 1.],
-                      [0., 0., -self.Fe / (P.mc + 2.0 * P.mr), -(P.mu / (P.mc + 2.0 * P.mr)), 0., 0. ],
-                      [0., 0., 0., 0., 0., 0.],
-                      [0., 0., 0., 0., 0., 0.]])
-        B = np.array([[0., 0.],
-                      [0., 0.],
-                      [0., 0.],
-                      [0., 0.],
-                      [1.0 / (P.mc + 2.0 * P.mr), 0.],
-                      [0., 1.0 / (P.Jc + 2 * P.mr * P.d ** 2)]])
-        self.C = np.array([[1., 0., 0., 0., 0., 0.],
-                           [0., 1., 0., 0., 0., 0.]])
+        A = np.array([
+            [0., 0., 0., 1., 0., 0.],
+            [0., 0., 0., 0., 1., 0.],
+            [0., 0., 0., 0., 0., 1.],
+            [0., 0., -self.Fe / (P.mc + 2.0 * P.mr), -(P.mu / (P.mc + 2.0 * P.mr)), 0., 0. ],
+            [0., 0., 0., 0., 0., 0.],
+            [0., 0., 0., 0., 0., 0.]
+        ])
+        B = np.array([
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [0., 0.],
+            [1.0 / (P.mc + 2.0 * P.mr), 0.],
+            [0., 1.0 / (P.Jc + 2 * P.mr * P.d ** 2)]
+        ])
+        self.C = np.array([
+            [1., 0., 0., 0., 0., 0.],
+            [0., 1., 0., 0., 0., 0.]
+        ])
         # form augmented system
         A1 = np.vstack((
                 np.hstack((A, np.zeros((6,2)))),
-                np.hstack((self.C, np.zeros((2,2))))))
+                np.hstack((self.C, np.zeros((2,2))))
+        ))
         B1 = np.vstack((B, np.zeros((2,2))))
+
         # gain calculation
         des_char_poly = np.convolve(np.convolve(np.convolve(np.convolve(
             [1.0, 2.0 * zeta_z * wn_z, wn_z ** 2],
             [1.0, 2.0 * zeta_h * wn_h, wn_h ** 2]),
             [1.0, 2.0 * zeta_th * wn_th, wn_th ** 2]),
             [1, integrator_z]),
-            [1, integrator_h])
+            [1, integrator_h]
+        )
         des_poles = np.roots(des_char_poly)
         # Compute the gains if the system is controllable
         if 0: #np.linalg.matrix_rank(cnt.ctrb(A1, B1)) != 8:
@@ -67,7 +76,7 @@ class ctrlTrajectoryFollower:
         self.integrator += (P.Ts/2.0)*(error + self.error_d1)
         self.error_d1 = error
         # Compute the state feedback controllers
-        u = np.array([[self.Fe], [0.]]) + u_r \
+        u = np.array([self.Fe, 0.]) + u_r \
             - self.K @ x_tilde - self.KI @ self.integrator
         return u
 

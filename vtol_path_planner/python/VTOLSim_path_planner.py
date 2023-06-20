@@ -1,5 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
+signalGenerator = reload(import_module("signalGenerator"))
+VTOLAnimation = reload(import_module("VTOLAnimation"))
+dataPlotter = reload(import_module("dataPlotter"))
+VTOLDynamics = reload(import_module("VTOLDynamics"))
+ctrlTrajectoryFollower = reload(import_module("ctrlTrajectoryFollower"))
+pathPlanner = reload(import_module("pathPlanner"))
+
 import VTOLParam as P
 from signalGenerator import signalGenerator
 from VTOLAnimation import VTOLAnimation
