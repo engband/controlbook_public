@@ -45,6 +45,7 @@ __MACOSX/
 *.zip
 
 # Python files & directories
+__pycache__/
 *.pyc
 *.ipynb_checkpoints/
 

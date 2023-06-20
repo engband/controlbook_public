@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class pathPlanner:
     def __init__(self):
         self.z_amp = 3.0
@@ -17,8 +16,8 @@ class pathPlanner:
                               [0.],  # theta_dot
                               [0.0], # f_ell path
                               [0.0], # f_r path
-                              ])
-        
+        ])
+
     def update(self, t):
         self.path[0][0] = self.z_amp * np.sin(self.z_freq * t) + self.z_offset
             # commanded position z
@@ -40,7 +39,6 @@ class pathPlanner:
 
     def z_ref(self):
         return self.path[0][0]
-    
+
     def h_ref(self):
         return self.path[1][0]
-

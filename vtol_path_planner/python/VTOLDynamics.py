@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 import VTOLParam as P
 
 
@@ -71,4 +71,3 @@ class VTOLDynamics:
         F3 = self.f(self.state + P.Ts / 2 * F2, u)
         F4 = self.f(self.state + P.Ts * F3, u)
         self.state += P.Ts / 6 * (F1 + 2 * F2 + 2 * F3 + F4)
-

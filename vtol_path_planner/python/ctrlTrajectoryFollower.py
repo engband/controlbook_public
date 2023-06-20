@@ -1,6 +1,6 @@
 import numpy as np
 import VTOLParam as P
-import scipy 
+import scipy
 #from scipy import signal
 #import control as cnt
 
@@ -17,7 +17,7 @@ class ctrlTrajectoryFollower:
         integrator_h = 0.2
         integrator_z = 0.2
         # State Space Equations
-        self.Fe = (P.mc + 2.0 * P.mr) * P.g  # equilibrium force 
+        self.Fe = (P.mc + 2.0 * P.mr) * P.g  # equilibrium force
         A = np.array([[0., 0., 0., 1., 0., 0.],
                       [0., 0., 0., 0., 1., 0.],
                       [0., 0., 0., 0., 0., 1.],
@@ -40,7 +40,7 @@ class ctrlTrajectoryFollower:
         # gain calculation
         des_char_poly = np.convolve(np.convolve(np.convolve(np.convolve(
             [1.0, 2.0 * zeta_z * wn_z, wn_z ** 2],
-            [1.0, 2.0 * zeta_h * wn_h, wn_h ** 2]), 
+            [1.0, 2.0 * zeta_h * wn_h, wn_h ** 2]),
             [1.0, 2.0 * zeta_th * wn_th, wn_th ** 2]),
             [1, integrator_z]),
             [1, integrator_h])
@@ -54,8 +54,8 @@ class ctrlTrajectoryFollower:
             K1 = res.gain_matrix
             self.K = K1[0:2, 0:6]
             self.KI = K1[0:2, 6:8]
-        self.integrator = np.array([[0.], [0]])  
-        self.error_d1 = np.array([[0.], [0.]]) 
+        self.integrator = np.array([[0.], [0]])
+        self.error_d1 = np.array([[0.], [0.]])
         self.Ts = P.Ts
 
     def update(self, path, x):
@@ -76,4 +76,3 @@ def saturate(u, limit):
     if abs(u) > limit:
         u = limit*np.sign(u)
     return u
-

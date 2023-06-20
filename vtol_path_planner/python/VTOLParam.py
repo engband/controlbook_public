@@ -34,6 +34,5 @@ max_thrust = 10.0  # Max thrust produced by each motor, N
 # mixing matrix
 mixing = np.linalg.inv(np.array([[1.0, 1.0], [d, -d]]))
 
-# equilibrium force 
-Fe = (mc + 2.0 * mr) * g  
-
+# equilibrium force
+Fe = (mc + 2.0 * mr) * g
