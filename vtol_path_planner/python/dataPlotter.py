@@ -1,6 +1,9 @@
+from IPython.core.debugger import set_trace
+
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import numpy as np
+
 import VTOLParam as P
 
 plt.ion()  # enable interactive drawing
@@ -33,11 +36,11 @@ class dataPlotter:
         self.handle.append(myPlot(self.ax[4], xlabel='t(s)', ylabel='torque(Nm)'))
 
     def update(self, t, states, path, motor_thrusts):
-        force = motor_thrusts[0][0]+motor_thrusts[1][0]
-        torque = P.d * (motor_thrusts[0][0] - motor_thrusts[1][0])
-        z_ref = path[0][0]
-        h_ref = path[1][0]
-        theta_ref = path[2][0]
+        force = motor_thrusts[0]+motor_thrusts[1]
+        torque = P.d * (motor_thrusts[0] - motor_thrusts[1])
+        z_ref = path[0]
+        h_ref = path[1]
+        theta_ref = path[2]
         # update the time history of all plot variables
         self.time_history.append(t)  # time
         self.zref_history.append(z_ref)  # reference position

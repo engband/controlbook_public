@@ -1,4 +1,7 @@
+from IPython.core.debugger import set_trace
+
 import numpy as np
+
 import VTOLParam as P
 
 
@@ -11,7 +14,7 @@ class VTOLDynamics:
             P.theta0,  # initial roll angle
             P.zdot0,  # initial lateral velocity
             P.hdot0,  # initial climb rate
-            P.thetadot0,  # initial angular velocity
+            P.thetadot0  # initial angular velocity
         ])
         #################################################
         # The parameters for any physical system are never known exactly. Feedback
@@ -58,11 +61,7 @@ class VTOLDynamics:
 
     def h(self):
         # return y=h(x)
-        z = self.state.item(0)
-        h = self.state.item(1)
-        theta = self.state.item(2)
-        y = np.array([z, h, theta])
-        return y
+        return self.state[:2].copy()
 
     def rk4_step(self, u):
         # Integrate ODE using Runge-Kutta RK4 algorithm

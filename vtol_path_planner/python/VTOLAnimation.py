@@ -1,6 +1,9 @@
+from IPython.core.debugger import set_trace
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
+
 import VTOLParam as P
 
 plt.ion()

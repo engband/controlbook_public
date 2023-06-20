@@ -1,8 +1,11 @@
+from IPython.core.debugger import set_trace
+
 import numpy as np
-import VTOLParam as P
 import scipy
 #from scipy import signal
 #import control as cnt
+
+import VTOLParam as P
 
 
 class ctrlTrajectoryFollower:
@@ -63,11 +66,12 @@ class ctrlTrajectoryFollower:
             K1 = res.gain_matrix
             self.K = K1[0:2, 0:6]
             self.KI = K1[0:2, 6:8]
-        self.integrator = np.array([[0.], [0]])
-        self.error_d1 = np.array([[0.], [0.]])
+        self.integrator = np.array([0., 0])
+        self.error_d1 = np.array([0., 0.])
         self.Ts = P.Ts
 
     def update(self, path, x):
+        # set_trace()
         x_r = path[0:6]
         x_tilde = x - x_r
         u_r = path[6:8]
